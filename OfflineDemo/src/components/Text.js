@@ -15,4 +15,10 @@ export default styled.Text`
     return '#6e7b8c';
   }};
   font-weight: ${p => (p.bold ? 'bold' : 'normal')};
+  font-size: ${p => {
+    if (p.tiny) {
+      return 10;
+    }
+    return 14;
+  }};
 `;

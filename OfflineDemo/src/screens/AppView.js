@@ -1,10 +1,12 @@
 // @flow
 
 import React, { Component } from 'react';
+import { FlatList } from 'react-native';
 import { type NavigationScreenProp } from 'react-navigation';
 import styled from 'styled-components/native';
 
 import CreatePostButton from '../components/CreatePostButton';
+import Post from '../components/Post';
 import sunSrc from '../assets/sun.gif';
 
 const Sun = styled.Image.attrs({ source: sunSrc })`
@@ -30,13 +32,39 @@ const SunWrapper = styled.View`
   height: 120px;
 `;
 
+type PostType = {
+  id: number,
+  text: string,
+  createdAt: Date
+};
+
 type Props = {
   navigation: NavigationScreenProp
 };
 
-export default class App extends Component<Props> {
+type State = {
+  posts: Array<PostType>
+};
+
+export default class App extends Component<Props, State> {
+  state: State = {
+    posts: [
+      {
+        id: 1,
+        text: 'Initial post',
+        createdAt: new Date()
+      },
+      {
+        id: 2,
+        text: 'Another post',
+        createdAt: new Date()
+      }
+    ]
+  };
   render() {
     const { navigation } = this.props;
+    const { posts } = this.state;
+
     return (
       <Page>
         <SunWrapper>
@@ -44,6 +72,11 @@ export default class App extends Component<Props> {
         </SunWrapper>
         <Feed>
           <CreatePostButton onPress={() => navigation.navigate('CreatePostModal')} />
+          <FlatList
+            data={posts}
+            keyExtractor={item => String(item.id)}
+            renderItem={({ item }) => <Post post={item} />}
+          />
         </Feed>
       </Page>
     );
