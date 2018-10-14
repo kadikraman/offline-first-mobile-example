@@ -4,10 +4,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components/native';
 import { KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native';
 import { type NavigationScreenProp } from 'react-navigation';
+import { Mutation } from 'react-apollo';
 
 import Text from '../components/Text';
 import Avatar from '../components/Avatar';
 import Page from '../components/Page';
+import CREATE_POST, { createPostUpdate } from '../graphql/mutations/createPost';
 
 const Header = styled.View`
   padding: 30px 20px 20px;
@@ -31,18 +33,6 @@ const Editor = styled.View`
 
 const ScrollView = styled.ScrollView`
   padding: 20px;
-`;
-
-const Loading = styled.View`
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  top: 0;
-  background-color: rgba(0, 0, 0, 0.8);
-  z-index: 1000;
-  justify-content: center;
-  align-items: center;
 `;
 
 type Props = {
@@ -84,9 +74,20 @@ class CreatePost extends Component<Props, OwnState> {
             <Text bold dark>
               Write a Post
             </Text>
-            <Text bold primary>
-              Post
-            </Text>
+            <Mutation mutation={CREATE_POST} update={createPostUpdate}>
+              {createPost => (
+                <TouchableOpacity
+                  onPress={() => {
+                    createPost({ variables: { text } });
+                    navigation.goBack();
+                  }}
+                >
+                  <Text bold primary>
+                    Post
+                  </Text>
+                </TouchableOpacity>
+              )}
+            </Mutation>
           </Header>
           <Author>
             <Avatar />

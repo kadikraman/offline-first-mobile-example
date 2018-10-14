@@ -4,10 +4,13 @@ import React, { Component } from 'react';
 import { FlatList } from 'react-native';
 import { type NavigationScreenProp } from 'react-navigation';
 import styled from 'styled-components/native';
+import { Query } from 'react-apollo';
 
 import CreatePostButton from '../components/CreatePostButton';
 import Post from '../components/Post';
+import Text from '../components/Text';
 import sunSrc from '../assets/sun.gif';
+import GET_POSTS from '../graphql/queries/getPosts';
 
 const Sun = styled.Image.attrs({ source: sunSrc })`
   height: 100px;
@@ -32,38 +35,19 @@ const SunWrapper = styled.View`
   height: 120px;
 `;
 
-type PostType = {
-  id: number,
-  text: string,
-  createdAt: Date
-};
+const Center = styled.View`
+  height: 100px;
+  justify-content: center;
+  align-items: center;
+`;
 
 type Props = {
   navigation: NavigationScreenProp
 };
 
-type State = {
-  posts: Array<PostType>
-};
-
-export default class App extends Component<Props, State> {
-  state: State = {
-    posts: [
-      {
-        id: 1,
-        text: 'Initial post',
-        createdAt: new Date()
-      },
-      {
-        id: 2,
-        text: 'Another post',
-        createdAt: new Date()
-      }
-    ]
-  };
+export default class App extends Component<Props> {
   render() {
     const { navigation } = this.props;
-    const { posts } = this.state;
 
     return (
       <Page>
@@ -72,11 +56,32 @@ export default class App extends Component<Props, State> {
         </SunWrapper>
         <Feed>
           <CreatePostButton onPress={() => navigation.navigate('CreatePostModal')} />
-          <FlatList
-            data={posts}
-            keyExtractor={item => String(item.id)}
-            renderItem={({ item }) => <Post post={item} />}
-          />
+          <Query query={GET_POSTS}>
+            {({ data, loading, error }) => {
+              if (loading) {
+                return (
+                  <Center>
+                    <Text>Loading...</Text>
+                  </Center>
+                );
+              }
+
+              if (error) {
+                return (
+                  <Center>
+                    <Text>Error</Text>
+                  </Center>
+                );
+              }
+              return (
+                <FlatList
+                  data={data.posts}
+                  keyExtractor={item => String(item.id)}
+                  renderItem={({ item }) => <Post post={item} />}
+                />
+              );
+            }}
+          </Query>
         </Feed>
       </Page>
     );

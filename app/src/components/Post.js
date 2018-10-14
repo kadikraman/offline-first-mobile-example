@@ -15,7 +15,7 @@ type Props = {
 
 export default ({ post }: Props) => (
   <ShadowCard>
-    <Author createdAt={post.createdAt} />
+    <Author post={post} />
     <Text>{post.text}</Text>
   </ShadowCard>
 );

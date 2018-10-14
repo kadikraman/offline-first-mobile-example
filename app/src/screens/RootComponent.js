@@ -1,8 +1,8 @@
 // @flow
 import { createStackNavigator } from 'react-navigation';
 
-import AppView from './screens/AppView';
-import CreatePostModal from './screens/CreatePostModal';
+import AppView from './AppView';
+import CreatePostModal from './CreatePostModal';
 
 export default createStackNavigator(
   {

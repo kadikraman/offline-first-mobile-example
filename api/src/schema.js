@@ -1,6 +1,7 @@
 // @flow
 const { gql } = require('apollo-server-express');
 const GraphQLDate = require('graphql-date');
+const reverse = require('lodash/reverse');
 
 const post_data = [
   {
@@ -22,7 +23,7 @@ const post = async (_, args) => {
 };
 
 const posts = async () => {
-  return post_data;
+  return reverse(post_data);
 };
 
 const getNewValue = (arr, index, newValue) => {
@@ -33,7 +34,7 @@ const deletePost = async (_, args) => {
   return { id: args.id };
 };
 
-const addPost = async (_, args) => {
+const createPost = async (_, args) => {
   ID_INDEX += 1;
 
   const newPost = {
@@ -62,7 +63,7 @@ const typeDefs = gql`
 
   type Mutation {
     deletePost(id: String!): DeletedId
-    addPost(text: String!): Post
+    createPost(text: String!): Post
   }
 
 
@@ -80,7 +81,7 @@ const resolvers = {
   },
   Mutation: {
     deletePost,
-    addPost
+    createPost
   }
 }
 

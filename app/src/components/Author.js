@@ -2,11 +2,13 @@
 
 import React from 'react';
 import styled from 'styled-components/native';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Alert } from 'react-native';
 import formatDate from 'date-fns/format';
 import distanceInWordsStrict from 'date-fns/distance_in_words_strict';
 import differenceInDays from 'date-fns/difference_in_days';
 import differenceInSeconds from 'date-fns/difference_in_seconds';
+import { Mutation } from 'react-apollo';
+import DELETE_POST, { deletePostUpdate } from '../graphql/mutations/deletePost';
 
 import Text from './Text';
 import Avatar from './Avatar';
@@ -42,7 +44,7 @@ export const getHumanDate = (createdAt: number) => {
   return distanceInWordsStrict(dateNow, dateLater, { addSuffix: true });
 };
 
-const Author = ({ createdAt }: { createdAt: Date }) => (
+const Author = ({ post }: { post: { createdAt: Date, id: string, text: string } }) => (
   <Wrapper>
     <AvatarWrapper>
       <StyledAvatar />
@@ -50,12 +52,28 @@ const Author = ({ createdAt }: { createdAt: Date }) => (
         <Text bold style={{ paddingBottom: 4 }}>
           Kadi Kraman
         </Text>
-        <Text tiny>{getHumanDate(createdAt)}</Text>
+        <Text tiny>{getHumanDate(post.createdAt)}</Text>
       </View>
     </AvatarWrapper>
-    <TouchableOpacity onPress={() => {}}>
-      <Text>Delete</Text>
-    </TouchableOpacity>
+    <Mutation mutation={DELETE_POST} update={deletePostUpdate}>
+      {deletePost => (
+        <TouchableOpacity
+          onPress={() => {
+            Alert.alert('Are you sure?', null, [
+              { text: 'No' },
+              {
+                text: 'Yes',
+                onPress: () => {
+                  deletePost({ variables: { id: post.id } });
+                }
+              }
+            ]);
+          }}
+        >
+          <Text>Delete</Text>
+        </TouchableOpacity>
+      )}
+    </Mutation>
   </Wrapper>
 );
 
