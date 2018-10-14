@@ -4,7 +4,7 @@ import gql from 'graphql-tag';
 import GET_POSTS from '../queries/getPosts';
 
 export default gql`
-  mutation deletePost($id: String!) {
+  mutation deletePost($id: ID!) {
     deletePost(id: $id) {
       id
     }

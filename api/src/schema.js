@@ -74,7 +74,7 @@ const typeDefs = gql`
   }
 
   type Mutation {
-    deletePost(id: String!): DeletedId
+    deletePost(id: ID!): DeletedId
     createPost(text: String!): Post
   }
 

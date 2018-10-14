@@ -11,6 +11,6 @@ export default styled.TouchableOpacity.attrs({ activeOpacity: 1 })`
   shadow-radius: 4px;
   shadow-color: rgba(0, 0, 0, 0.12);
   shadow-offset: 0px 0px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   padding: 10px;
 `;
