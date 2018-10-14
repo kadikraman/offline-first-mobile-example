@@ -17,26 +17,23 @@ export const getOptimisticResponse = (text: string) => ({
   __typename: 'Mutation',
   createPost: {
     __typename: 'Post',
-    id: '0',
+    id: String(new Date().getTime()),
     text,
     createdAt: new Date()
   }
 });
 
-export const createPostUpdate = (
-  cache: Object,
-  {
-    data: { createPost }
-  }: {
-    data: {
-      createPost: {
-        id: string,
-        text: string,
-        createdAt: Date
-      }
+type Response = {
+  data: {
+    createPost: {
+      id: string,
+      text: string,
+      createdAt: Date
     }
   }
-) => {
+};
+
+export const createPostUpdate = (cache: Object, response: Response) => {
   const cachedPosts = cache.readQuery({
     query: GET_POSTS
   });
@@ -44,7 +41,7 @@ export const createPostUpdate = (
   cache.writeQuery({
     query: GET_POSTS,
     data: {
-      posts: [createPost, ...cachedPosts.posts]
+      posts: [response.data.createPost, ...cachedPosts.posts]
     }
   });
 };

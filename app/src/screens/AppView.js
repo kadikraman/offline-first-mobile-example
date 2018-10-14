@@ -66,8 +66,6 @@ export default class App extends Component<Props> {
                 );
               }
 
-              console.log(data);
-
               if (data && data.posts) {
                 return (
                   <FlatList
