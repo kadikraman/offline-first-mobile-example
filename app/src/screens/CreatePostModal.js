@@ -9,7 +9,10 @@ import { Mutation } from 'react-apollo';
 import Text from '../components/Text';
 import Avatar from '../components/Avatar';
 import Page from '../components/Page';
-import CREATE_POST, { createPostUpdate } from '../graphql/mutations/createPost';
+import CREATE_POST, {
+  createPostUpdate,
+  getOptimisticResponse
+} from '../graphql/mutations/createPost';
 
 const Header = styled.View`
   padding: 30px 20px 20px;
@@ -78,7 +81,10 @@ class CreatePost extends Component<Props, OwnState> {
               {createPost => (
                 <TouchableOpacity
                   onPress={() => {
-                    createPost({ variables: { text } });
+                    createPost({
+                      variables: { text },
+                      optimisticResponse: getOptimisticResponse(text)
+                    });
                     navigation.goBack();
                   }}
                 >

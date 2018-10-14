@@ -8,7 +8,10 @@ import distanceInWordsStrict from 'date-fns/distance_in_words_strict';
 import differenceInDays from 'date-fns/difference_in_days';
 import differenceInSeconds from 'date-fns/difference_in_seconds';
 import { Mutation } from 'react-apollo';
-import DELETE_POST, { deletePostUpdate } from '../graphql/mutations/deletePost';
+import DELETE_POST, {
+  deletePostUpdate,
+  getOptimisticResponse
+} from '../graphql/mutations/deletePost';
 
 import Text from './Text';
 import Avatar from './Avatar';
@@ -64,7 +67,10 @@ const Author = ({ post }: { post: { createdAt: Date, id: string, text: string } 
               {
                 text: 'Yes',
                 onPress: () => {
-                  deletePost({ variables: { id: post.id } });
+                  deletePost({
+                    variables: { id: post.id },
+                    optimisticResponse: getOptimisticResponse(post.id)
+                  });
                 }
               }
             ]);

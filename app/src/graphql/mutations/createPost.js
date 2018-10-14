@@ -13,6 +13,16 @@ export default gql`
   }
 `;
 
+export const getOptimisticResponse = (text: string) => ({
+  __typename: 'Mutation',
+  createPost: {
+    __typename: 'Post',
+    id: '0',
+    text,
+    createdAt: new Date()
+  }
+});
+
 export const createPostUpdate = (
   cache: Object,
   {

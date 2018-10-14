@@ -7,7 +7,7 @@ import Author from './Author';
 
 type Props = {
   post: {
-    id: number,
+    id: string,
     text: string,
     createdAt: Date
   }

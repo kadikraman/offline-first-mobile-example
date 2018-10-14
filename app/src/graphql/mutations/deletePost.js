@@ -11,6 +11,14 @@ export default gql`
   }
 `;
 
+export const getOptimisticResponse = (id: string) => ({
+  __typename: 'Mutation',
+  deletePost: {
+    __typename: 'DeletedId',
+    id
+  }
+});
+
 export const deletePostUpdate = (
   cache: Object,
   { data: { deletePost } }: { data: { deletePost: { id: string } } }

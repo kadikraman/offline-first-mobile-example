@@ -2,39 +2,51 @@
 const { gql } = require('apollo-server-express');
 const GraphQLDate = require('graphql-date');
 const reverse = require('lodash/reverse');
+const findIndex = require('lodash/findIndex');
 
-const post_data = [
+const timeout = (milliseconds) => new Promise(resolve => {
+  setTimeout(() => {
+    resolve();
+  }, milliseconds)
+})
+
+let POST_DATA = [
   {
     id: '1',
-    text: 'Initial post',
-    createdAt: new Date()
-  },
-  {
-    id: '2',
-    text: 'Another post',
+    text: 'My first post! 🎉',
     createdAt: new Date()
   }
 ]
 
-let ID_INDEX = post_data.length;
+let ID_INDEX = POST_DATA.length;
 
 const post = async (_, args) => {
-  return post_data.find(post => post.id === args.id);
+  console.log(`GET post ID: ${args.id}`)
+  return POST_DATA.find(post => post.id === args.id);
 };
 
 const posts = async () => {
-  return reverse(post_data);
+  console.log('GET posts');
+  await timeout(2000)
+
+  return reverse(POST_DATA);
 };
 
-const getNewValue = (arr, index, newValue) => {
-  return [...arr.slice(0, index), newValue, ...arr.slice(index + 1)];
+const withoutIndex = (arr, index) => {
+  return [...arr.slice(0, index), ...arr.slice(index + 1)];
 };
 
 const deletePost = async (_, args) => {
+  console.log(`DELETE post with ID: ${args.id}`);
+  const index = findIndex(POST_DATA, post => post.id === args.id)
+
+  POST_DATA = withoutIndex(POST_DATA, index);
+
   return { id: args.id };
 };
 
 const createPost = async (_, args) => {
+  console.log(`CREATE post with text: ${args.text}`);
   ID_INDEX += 1;
 
   const newPost = {
@@ -43,7 +55,7 @@ const createPost = async (_, args) => {
     createdAt: new Date(),
   }
 
-  post_data.push(newPost)
+  POST_DATA.push(newPost)
 
   return newPost;
 }
