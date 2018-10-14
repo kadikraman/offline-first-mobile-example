@@ -27,7 +27,7 @@ const post = async (_, args) => {
 
 const posts = async () => {
   console.log('GET posts');
-  await timeout(2000)
+  await timeout(1000)
 
   return reverse(POST_DATA);
 };
