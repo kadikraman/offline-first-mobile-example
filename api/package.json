@@ -1,0 +1,20 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec 'node -r babel-register ./src/index'"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server-express": "^2.1.0",
+    "babel-register": "^6.26.0",
+    "express": "^4.16.4",
+    "graphql": "^14.0.2",
+    "graphql-date": "^1.0.3",
+    "nodemon": "^1.18.4"
+  }
+}
