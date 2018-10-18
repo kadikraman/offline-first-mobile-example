@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { FlatList } from 'react-native';
+import { FlatList, RefreshControl } from 'react-native';
 import { type NavigationScreenProp } from 'react-navigation';
 import styled from 'styled-components/native';
 import { Query } from 'react-apollo';
@@ -57,7 +57,7 @@ export default class App extends Component<Props> {
         <Feed>
           <CreatePostButton onPress={() => navigation.navigate('CreatePostModal')} />
           <Query query={GET_POSTS}>
-            {({ data, loading, error }) => {
+            {({ data, loading, error, refetch }) => {
               if (loading) {
                 return (
                   <Center>
@@ -72,6 +72,7 @@ export default class App extends Component<Props> {
                     data={data.posts}
                     keyExtractor={item => String(item.id)}
                     renderItem={({ item }) => <Post post={item} />}
+                    refreshControl={<RefreshControl refreshing={loading} onRefresh={refetch} />}
                   />
                 );
               }
