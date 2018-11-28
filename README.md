@@ -1,4 +1,6 @@
-# Example app for my talk "Going Offline-First in React Native with GraphQL"
+# Example app
+
+For my talk "Going Offline-First in React Native with GraphQL".
 
 This includes a React Native mobile app and a demo server with some in-memory data
 
