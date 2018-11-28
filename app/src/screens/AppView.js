@@ -45,6 +45,8 @@ type Props = {
   navigation: NavigationScreenProp
 };
 
+const POLL_STATUS = 6;
+
 export default class App extends Component<Props> {
   render() {
     const { navigation } = this.props;
@@ -56,9 +58,9 @@ export default class App extends Component<Props> {
         </SunWrapper>
         <Feed>
           <CreatePostButton onPress={() => navigation.navigate('CreatePostModal')} />
-          <Query query={GET_POSTS}>
-            {({ data, loading, error, refetch }) => {
-              if (loading) {
+          <Query query={GET_POSTS} fetchPolicy="cache-and-network" pollInterval={5000}>
+            {({ data, loading, error, refetch, networkStatus }) => {
+              if (!data && loading) {
                 return (
                   <Center>
                     <Text>Loading...</Text>
@@ -69,10 +71,15 @@ export default class App extends Component<Props> {
               if (data && data.posts) {
                 return (
                   <FlatList
-                    data={data.posts}
+                    data={data.posts.sort((a, b) => Number(b.id) - Number(a.id))}
                     keyExtractor={item => String(item.id)}
                     renderItem={({ item }) => <Post post={item} />}
-                    refreshControl={<RefreshControl refreshing={loading} onRefresh={refetch} />}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={loading && networkStatus !== POLL_STATUS}
+                        onRefresh={refetch}
+                      />
+                    }
                   />
                 );
               }

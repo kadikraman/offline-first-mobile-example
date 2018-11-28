@@ -1,7 +1,6 @@
 // @flow
 const { gql } = require('apollo-server-express');
 const GraphQLDate = require('graphql-date');
-const reverse = require('lodash/reverse');
 const findIndex = require('lodash/findIndex');
 
 const timeout = (milliseconds) => new Promise(resolve => {
@@ -14,7 +13,7 @@ let POST_DATA = [
   {
     id: '1',
     text: 'My first post! 🎉',
-    createdAt: new Date()
+    createdAt: new Date('01/10/2018')
   }
 ]
 
@@ -26,10 +25,9 @@ const post = async (_, args) => {
 };
 
 const posts = async () => {
-  console.log('GET posts');
   await timeout(1000)
 
-  return reverse(POST_DATA);
+  return POST_DATA;
 };
 
 const withoutIndex = (arr, index) => {
