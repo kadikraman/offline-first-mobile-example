@@ -58,7 +58,7 @@ export default class App extends Component<Props> {
         </SunWrapper>
         <Feed>
           <CreatePostButton onPress={() => navigation.navigate('CreatePostModal')} />
-          <Query query={GET_POSTS} fetchPolicy="cache-and-network" pollInterval={5000}>
+          <Query query={GET_POSTS} fetchPolicy="cache-and-network" pollInterval={3000}>
             {({ data, loading, error, refetch, networkStatus }) => {
               if (!data && loading) {
                 return (
@@ -71,7 +71,7 @@ export default class App extends Component<Props> {
               if (data && data.posts) {
                 return (
                   <FlatList
-                    data={data.posts.sort((a, b) => Number(b.id) - Number(a.id))}
+                    data={data.posts.sort((a, b) => b.id - a.id)}
                     keyExtractor={item => String(item.id)}
                     renderItem={({ item }) => <Post post={item} />}
                     refreshControl={

@@ -11,9 +11,9 @@ const timeout = (milliseconds) => new Promise(resolve => {
 
 let POST_DATA = [
   {
-    id: '1',
+    id: 1,
     text: 'My first post! 🎉',
-    createdAt: new Date('01/10/2018')
+    createdAt: new Date('11/27/2018')
   }
 ]
 
@@ -48,7 +48,7 @@ const createPost = async (_, args) => {
   ID_INDEX += 1;
 
   const newPost = {
-    id: String(ID_INDEX),
+    id: ID_INDEX,
     text: args.text,
     createdAt: new Date(),
   }
